@@ -228,12 +228,7 @@ namespace UnturnedImages.Vehicles
             return null;
         }
 
-        private List<Color32> GetPaintColors(VehicleAsset asset)
-        {
-            if (asset.DefaultPaintColors != null)
-                return asset.DefaultPaintColors;
-
-            return new List<Color32>()
+        private static readonly List<Color32> _defaultColors = new List<Color32>()
             {
                 new Color32(53, 53, 53, 1), // black
                 new Color32(55, 101, 140, 1), // blue
@@ -244,6 +239,13 @@ namespace UnturnedImages.Vehicles
                 new Color32(212, 212, 212, 1), // white
                 new Color32(205, 170, 30, 1) // yellow
             };
+
+        private List<Color32> GetPaintColors(VehicleAsset asset)
+        {
+            if (asset.DefaultPaintColors != null)
+                return asset.DefaultPaintColors;
+
+            return _defaultColors;
         }
     }
 }
