@@ -79,7 +79,7 @@ namespace UnturnedImages.Items
                 {
                     @override = new RepositoryOverride(guid, repository);
                 }
-                else if (!string.IsNullOrEmpty(overrideConfig.WorkshopId) && ulong.TryParse(overrideConfig.WorkshopId, out var workshopId))
+                else if (!string.IsNullOrWhiteSpace(overrideConfig.WorkshopId) && ulong.TryParse(overrideConfig.WorkshopId, out var workshopId))
                 {
                     @override = new RepositoryOverride(workshopId.ToString(), repository);
                 }

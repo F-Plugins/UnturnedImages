@@ -80,7 +80,7 @@ namespace UnturnedImages.Vehicles
                 {
                     @override = new RepositoryOverride(guid, repository);
                 }
-                else if(!string.IsNullOrEmpty(overrideConfig.WorkshopId) && ulong.TryParse(overrideConfig.WorkshopId, out var workshopId))
+                else if(!string.IsNullOrWhiteSpace(overrideConfig.WorkshopId) && ulong.TryParse(overrideConfig.WorkshopId, out var workshopId))
                 {
                     @override = new RepositoryOverride(workshopId.ToString(), repository);
                 }
@@ -151,10 +151,9 @@ namespace UnturnedImages.Vehicles
         }
 
         /// <inheritdoc />
-        public string? GetVehicleImageUrlSync(Guid guid, Color32 paintColor,bool includeWorkshop = true)
+        public string? GetVehicleImageUrlSync(Guid guid, Color32 paintColor, bool includeWorkshop = true)
         {
             var asset = GetVehicleAsset(guid, out _);
-
             if (asset == null)
                 return null;
 
@@ -173,21 +172,18 @@ namespace UnturnedImages.Vehicles
                 return null;
             }
 
-            var @override = _overrideRepositories.FirstOrDefault(x => x.Contains(asset.GUID, asset.id, origin.workshopFileId));
+            var @override = _overrideRepositories.FirstOrDefault(x => x.Contains(asset!.GUID, asset.id, origin.workshopFileId));
 
             var repository = @override?.Repository ?? _defaultVehicleRepository;
 
             string id = asset.GUID.ToString();
 
-            // if paint color is null use 0 default paint color
-            // if paint color is not null but not valid use 0 paint color
-            if((paintColor == null && asset.SupportsPaintColor) ||
-                (asset.SupportsPaintColor && paintColor != null && !asset.DefaultPaintColors.Any(x => x.r == paintColor.Value.r && x.g == paintColor.Value.g && x.b == paintColor.Value.b)))
+            if (paintColor == null && asset.SupportsPaintColor)
             {
-                paintColor = asset.DefaultPaintColors[0];
+                paintColor = GetPaintColors(asset).RandomOrDefault();
             }
 
-            if(paintColor != null)
+            if (paintColor != null && asset.SupportsPaintColor)
             {
                 id += $"-{paintColor.Value.r}-{paintColor.Value.g}-{paintColor.Value.b}";
             }
@@ -230,6 +226,24 @@ namespace UnturnedImages.Vehicles
             }
 
             return null;
+        }
+
+        private List<Color32> GetPaintColors(VehicleAsset asset)
+        {
+            if (asset.DefaultPaintColors != null)
+                return asset.DefaultPaintColors;
+
+            return new List<Color32>()
+            {
+                new Color32(53, 53, 53, 1), // black
+                new Color32(55, 101, 140, 1), // blue
+                new Color32(46, 100, 46, 1), // green
+                new Color32(189, 110, 39, 1), // orange
+                new Color32(106, 70, 109, 1), // purple
+                new Color32(154, 37, 37, 1), // red
+                new Color32(212, 212, 212, 1), // white
+                new Color32(205, 170, 30, 1) // yellow
+            };
         }
     }
 }

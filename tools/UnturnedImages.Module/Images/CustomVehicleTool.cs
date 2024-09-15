@@ -1,5 +1,6 @@
 ﻿using SDG.Unturned;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -175,7 +176,7 @@ namespace UnturnedImages.Module.Images
             }
             else
             {
-                foreach(var color in vehicleAsset.DefaultPaintColors)
+                foreach(var color in GetPaintColors(vehicleAsset))
                 {
                     PaintableVehicleSection[] paintableVehicleSections = vehicleAsset.PaintableVehicleSections;
                     for (int i = 0; i < paintableVehicleSections.Length; i++)
@@ -195,7 +196,9 @@ namespace UnturnedImages.Module.Images
                             continue;
                         }
 
-                        component.material.SetColor(Shader.PropertyToID("_PaintColor"), color);
+                        List<Material> materials = new();
+                        component.GetMaterials(materials);
+                        foreach (var material in materials) { material.SetColor(Shader.PropertyToID("_PaintColor"), color);  };
                     }
 
                     Texture2D texture = CustomImageTool.CaptureIcon(vehicleAsset.GUID, 0, vehicle, _camera,
@@ -211,6 +214,24 @@ namespace UnturnedImages.Module.Images
 
             _camera.SetParent(null);
             Destroy(vehicleParent.gameObject);
+        }
+
+        private List<Color32> GetPaintColors(VehicleAsset asset)
+        {
+            if (asset.DefaultPaintColors != null && asset.DefaultPaintColors.Count > 0)
+                return asset.DefaultPaintColors;
+
+            return new List<Color32>()
+            {
+                new Color32(53, 53, 53, 1), // black
+                new Color32(55, 101, 140, 1), // blue
+                new Color32(46, 100, 46, 1), // green
+                new Color32(189, 110, 39, 1), // orange
+                new Color32(106, 70, 109, 1), // purple
+                new Color32(154, 37, 37, 1), // red
+                new Color32(212, 212, 212, 1), // white
+                new Color32(205, 170, 30, 1) // yellow
+            };
         }
     }
 }
