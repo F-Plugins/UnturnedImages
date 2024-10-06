@@ -145,7 +145,7 @@ namespace UnturnedImages.Module.Images
                 streamWriter.Write($@"
 # Use this in your UnturnedImages/config.yaml file
 - WorkshopId: ""{pair.Key}"" # The ID of the override.
-  Repository: ""https://cdn.jsdelivr.net/gh/SilKsPlugins/UnturnedIcons@images/modded/{modId}/{assetCategory}/{{{(assetCategory == "items" ? "ItemId" : "VehicleId")}}}.png"" # The repository of the override.
+  Repository: ""https://cdn.jsdelivr.net/gh/F-Plugins/UnturnedImages@images/modded/{modId}/{assetCategory}/{{{(assetCategory == "items" ? "ItemId" : "VehicleId")}}}.png"" # The repository of the override.
                 ".Trim());
             }
         }
