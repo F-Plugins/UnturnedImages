@@ -1,0 +1,3 @@
+# Use this in your UnturnedImages/config.yaml file
+- WorkshopId: "1983200271" # The ID of the override.
+  Repository: "https://cdn.jsdelivr.net/gh/F-Plugins/UnturnedImages@images/modded/1983200271/items/{ItemId}.png" # The repository of the override.
