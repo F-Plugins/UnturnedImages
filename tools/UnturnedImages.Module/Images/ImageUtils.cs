@@ -145,7 +145,7 @@ namespace UnturnedImages.Module.Images
                 streamWriter.Write($@"
 # Use this in your UnturnedImages/config.yaml file
 - WorkshopId: ""{pair.Key}"" # The ID of the override.
-  Repository: ""https://cdn.jsdelivr.net/gh/F-Plugins/UnturnedImages@images/modded/{modId}/{assetCategory}/{{{(assetCategory == "items" ? "ItemId" : "VehicleId")}}}.png"" # The repository of the override.
+  Repository: ""https://cdn.jsdelivr.net/gh/F-Plugins/UnturnedImages@images/workshop/{modId}/{assetCategory}/{{{(assetCategory == "items" ? "ItemId" : "VehicleId")}}}.png"" # The repository of the override.
                 ".Trim());
             }
         }
@@ -225,48 +225,48 @@ namespace UnturnedImages.Module.Images
             CaptureVehicleImages(vehicleAssets, vehicleAngles);
         }
 
-        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-        [HarmonyPatch]
-        private static class UnturnedPatches
-        {
-            private static Vector3 _iconPosition;
-            private static Quaternion _iconRotation;
+        //[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        //[HarmonyPatch]
+        //private static class UnturnedPatches
+        //{
+        //    private static Vector3 _iconPosition;
+        //    private static Quaternion _iconRotation;
 
-            [HarmonyPatch(typeof(ItemTool), "captureIcon")]
-            [HarmonyPrefix]
-            public static void ItemToolCaptureIconPre(Transform model, Transform icon, ushort id, int width, int height, ref float orthoSize)
-            {
-                // Preserve position and rotation
-                _iconPosition = icon.position;
-                _iconRotation = icon.rotation;
+        //    [HarmonyPatch(typeof(ItemTool), "captureIcon")]
+        //    [HarmonyPrefix]
+        //    public static void ItemToolCaptureIconPre(Transform model, Transform icon, ushort id, int width, int height, ref float orthoSize)
+        //    {
+        //        // Preserve position and rotation
+        //        _iconPosition = icon.position;
+        //        _iconRotation = icon.rotation;
 
-                var up = icon.up;
-                var forward = icon.forward;
-                var right = icon.right;
+        //        var up = icon.up;
+        //        var forward = icon.forward;
+        //        var right = icon.right;
 
-                // Adjust item icon rotation
-                icon.RotateAround(model.position, right, ItemIconRotation.x);
-                icon.RotateAround(model.position, up, ItemIconRotation.y);
-                icon.RotateAround(model.position, forward, ItemIconRotation.z);
+        //        // Adjust item icon rotation
+        //        icon.RotateAround(model.position, right, ItemIconRotation.x);
+        //        icon.RotateAround(model.position, up, ItemIconRotation.y);
+        //        icon.RotateAround(model.position, forward, ItemIconRotation.z);
 
 
-                // Fix ortho size
-                var itemAsset = Assets.find(EAssetType.ITEM, id);
+        //        // Fix ortho size
+        //        var itemAsset = Assets.find(EAssetType.ITEM, id);
 
-                orthoSize = CustomImageTool.CalculateOrthographicSize(itemAsset, model.gameObject, icon, width, height, out var position);
+        //        orthoSize = CustomImageTool.CalculateOrthographicSize(itemAsset, model.gameObject, icon, width, height, out var position);
 
-                // Adjust item icon position
-                icon.position = position;
-            }
+        //        // Adjust item icon position
+        //        icon.position = position;
+        //    }
 
-            [HarmonyPatch(typeof(ItemTool), "captureIcon")]
-            [HarmonyPostfix]
-            public static void ItemToolCaptureIconPost(Transform icon)
-            {
-                // Restore position and rotation
-                icon.position = _iconPosition;
-                icon.rotation = _iconRotation;
-            }
-        }
+        //    [HarmonyPatch(typeof(ItemTool), "captureIcon")]
+        //    [HarmonyPostfix]
+        //    public static void ItemToolCaptureIconPost(Transform icon)
+        //    {
+        //        // Restore position and rotation
+        //        icon.position = _iconPosition;
+        //        icon.rotation = _iconRotation;
+        //    }
+        //}
     }
 }
