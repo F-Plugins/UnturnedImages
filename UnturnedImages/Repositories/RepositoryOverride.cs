@@ -31,7 +31,7 @@ namespace UnturnedImages.Repositories
 
         public bool Contains(Guid guid, ushort id, ulong workshopId)
         {
-            return (Guid == guid) || (Range?.IsWithin(id) ?? false) || (WorkshopId?.Equals(workshopId) ?? false);
+            return (Guid == guid) || (Range?.IsWithin(id) ?? false) || (WorkshopId?.Equals(workshopId.ToString()) ?? false);
         }
     }
 }
