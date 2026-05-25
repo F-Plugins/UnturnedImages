@@ -160,7 +160,7 @@ namespace UnturnedImages.Module.Images
             var extents = bounds.extents;
             if (extents.ContainsInfinity() || extents.ContainsNaN() || extents.IsNearlyZero(0.001f))
             {
-                Assets.reportError(assetContext, "has invalid icon world extent ({0})", extents);
+                //Assets.reportError(assetContext, "has invalid icon world extent ({0})", extents);
                 return 1f;
             }
 
@@ -176,7 +176,7 @@ namespace UnturnedImages.Module.Images
 
             if (extents2.ContainsInfinity() || extents2.ContainsNaN() || extents2.IsNearlyZero(0.001f))
             {
-                Assets.reportError(assetContext, "has invalid icon local extent ({0})", extents);
+                //Assets.reportError(assetContext, "has invalid icon local extent ({0})", extents);
                 return 1f;
             }
 

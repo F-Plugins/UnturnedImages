@@ -185,14 +185,16 @@ namespace UnturnedImages.Module.Images
                         Transform transform = vehicle.Find(paintableVehicleSection.path);
                         if (transform == null)
                         {
-                            Assets.reportError(vehicleAsset, "paintable section missing transform \"" + paintableVehicleSection.path + "\"");
+                            UnturnedLog.error($"Asset {vehicleAsset.GUID} paintable sectio is missing transform \"{paintableVehicleSection.path}\"");
+                            //Assets.reportError(vehicleAsset, "paintable section missing transform \"" + paintableVehicleSection.path + "\"");
                             continue;
                         }
 
                         Renderer component = transform.GetComponent<Renderer>();
                         if (component == null)
                         {
-                            Assets.reportError(vehicleAsset, "paintable section missing renderer \"" + paintableVehicleSection.path + "\"");
+                            //Assets.reportError(vehicleAsset, "paintable section missing renderer \"" + paintableVehicleSection.path + "\"");
+                            UnturnedLog.error($"Asset {vehicleAsset.GUID} paintable sectio is missing renderer \"{paintableVehicleSection.path}\"");
                             continue;
                         }
 
