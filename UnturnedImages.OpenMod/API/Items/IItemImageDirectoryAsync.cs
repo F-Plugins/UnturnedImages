@@ -1,13 +1,18 @@
-﻿using OpenMod.API.Ioc;
+﻿#if OPENMOD
+using OpenMod.API.Ioc;
+#endif
 using System;
+using System.Threading.Tasks;
 
 namespace UnturnedImages.API.Items
 {
     /// <summary>
-    /// A synchronous item image directory.
+    /// An asynchronous item image directory.
     /// </summary>
+#if OPENMOD
     [Service]
-    public interface IItemImageDirectorySync
+#endif
+    public interface IItemImageDirectoryAsync
     {
         /// <summary>
         /// Gets the URL for the specified item's image.
@@ -18,8 +23,7 @@ namespace UnturnedImages.API.Items
         /// The URL for the specified item's image if one exists, <c>null</c> otherwise.
         /// Result may not be null even if image URL leads to 404 for performance reasons.
         /// </returns>
-        string? GetItemImageUrlSync(Guid guid, bool includeWorkshop = true);
-
+        Task<string?> GetItemImageUrlAsync(Guid guid, bool includeWorkshop = true);
 
         /// <summary>
         /// Gets the URL for the specified item's image.
@@ -31,6 +35,6 @@ namespace UnturnedImages.API.Items
         /// Result may not be null even if image URL leads to 404 for performance reasons.
         /// </returns>
         [Obsolete]
-        string? GetItemImageUrlSync(ushort id, bool includeWorkshop = true);
+        Task<string?> GetItemImageUrlAsync(ushort id, bool includeWorkshop = true);
     }
 }

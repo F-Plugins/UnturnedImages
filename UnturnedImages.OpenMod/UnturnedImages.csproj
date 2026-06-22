@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
+		<AssemblyName>UnturnedImages</AssemblyName>
+		<RootNamespace>UnturnedImages</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -23,6 +25,7 @@
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
 		<Nullable>enable</Nullable>
+		<DefineConstants>$(DefineConstants);OPENMOD</DefineConstants>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<NoWarn>$(NoWarn);NU1701;NU1702;CS0436</NoWarn>
 	</PropertyGroup>

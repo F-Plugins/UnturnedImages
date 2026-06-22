@@ -22,16 +22,16 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Update version
-        run: 'sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages/UnturnedImages.csproj'
+        run: 'sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.OpenMod/UnturnedImages.csproj'
       - name: Build
-        run: dotnet build UnturnedImages/UnturnedImages.csproj --configuration Release --no-restore
+        run: dotnet build UnturnedImages.OpenMod/UnturnedImages.csproj --configuration Release --no-restore
       - name: Push to NuGet
-        run: dotnet nuget push UnturnedImages/bin/Release/*.nupkg
+        run: dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg
           --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
           --source https://api.nuget.org/v3/index.json
           --skip-duplicate
       - name: Push to GitHub
-        run: dotnet nuget push UnturnedImages/bin/Release/*.nupkg
+        run: dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg
           --api-key ${{ secrets.GITHUB_TOKEN }}
           --source https://nuget.pkg.github.com/F-Plugins/index.json
           --skip-duplicate

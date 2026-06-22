@@ -1,4 +1,6 @@
-﻿using OpenMod.API.Ioc;
+﻿#if OPENMOD
+using OpenMod.API.Ioc;
+#endif
 using System;
 using UnityEngine;
 
@@ -7,7 +9,9 @@ namespace UnturnedImages.API.Vehicles
     /// <summary>
     /// An asynchronous vehicle image directory.
     /// </summary>
+#if OPENMOD
     [Service]
+#endif
     public interface IVehicleImageDirectorySync
     {
         /// <summary>

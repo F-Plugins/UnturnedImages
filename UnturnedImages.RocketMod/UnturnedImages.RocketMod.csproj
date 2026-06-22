@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>9.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<AssemblyName>UnturnedImages.RocketMod</AssemblyName>
+		<RootNamespace>UnturnedImages.RocketMod</RootNamespace>
+		<Version>0.0.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>Feli.UnturnedImages.RocketMod</PackageId>
+		<PackageDescription>A RocketMod plugin for Unturned which adds a repository of images available to plugins for usage in UIs.</PackageDescription>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<PackageTags>rocketmod rocket-plugin unturned</PackageTags>
+		<RepositoryUrl>https://github.com/SilKsPlugins/UnturnedImages</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Stephen White, Feli</Authors>
+		<Copyright>Copyright © Stephen White 2021</Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RestoreMonarchy.RocketRedist" Version="3.26.3.3" PrivateAssets="all" />
+		<PackageReference Include="RestoreMonarchy.UnturnedRedist" Version="3.26.3.3" PrivateAssets="all" />
+	</ItemGroup>
+
+</Project>

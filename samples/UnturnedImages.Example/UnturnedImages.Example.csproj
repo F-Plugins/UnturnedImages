@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\UnturnedImages\UnturnedImages.csproj" />
+	  <ProjectReference Include="..\..\UnturnedImages.OpenMod\UnturnedImages.csproj" />
 	</ItemGroup>
 
 	<Target Name="ChangeAliasesOfNugetRefs" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
