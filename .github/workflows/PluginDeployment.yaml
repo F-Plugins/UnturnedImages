@@ -21,17 +21,35 @@ jobs:
           dotnet-version: 6.0.x
       - name: Install dependencies
         run: dotnet restore
-      - name: Update version
-        run: 'sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.OpenMod/UnturnedImages.csproj'
-      - name: Build
+      - name: Update versions
+        run: |
+          sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.OpenMod/UnturnedImages.csproj
+          sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.RocketMod/UnturnedImages.RocketMod.csproj
+      - name: Build OpenMod
         run: dotnet build UnturnedImages.OpenMod/UnturnedImages.csproj --configuration Release --no-restore
-      - name: Push to NuGet
-        run: dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg
-          --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
-          --source https://api.nuget.org/v3/index.json
-          --skip-duplicate
-      - name: Push to GitHub
-        run: dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg
-          --api-key ${{ secrets.GITHUB_TOKEN }}
-          --source https://nuget.pkg.github.com/F-Plugins/index.json
-          --skip-duplicate
+      - name: Build RocketMod
+        run: dotnet build UnturnedImages.RocketMod/UnturnedImages.RocketMod.csproj --configuration Release --no-restore
+      - name: Push OpenMod to NuGet
+        run: |
+          dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_DEPLOY_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+      - name: Push RocketMod to NuGet
+        run: |
+          dotnet nuget push UnturnedImages.RocketMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_DEPLOY_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+      - name: Push OpenMod to GitHub
+        run: |
+          dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/F-Plugins/index.json \
+            --skip-duplicate
+      - name: Push RocketMod to GitHub
+        run: |
+          dotnet nuget push UnturnedImages.RocketMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/F-Plugins/index.json \
+            --skip-duplicate
