@@ -7,9 +7,13 @@ on:
         description: "Release Version (SemVer: https://semver.org)"
         required: true
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
-    name: "GitHub Release"
+    name: "Release"
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +33,13 @@ jobs:
 
       - name: Update versions
         run: |
-          sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.OpenMod/UnturnedImages.csproj
-          sed -i "s#<Version>0.0.0</Version>#<Version>${{ github.event.inputs.version }}</Version>#" UnturnedImages.RocketMod/UnturnedImages.RocketMod.csproj
+          release_version="${{ github.event.inputs.version }}"
+
+          sed -i "s#<Version>0.0.0</Version>#<Version>$release_version</Version>#" UnturnedImages.OpenMod/UnturnedImages.csproj
+          sed -i "s#<Version>0.0.0</Version>#<Version>$release_version</Version>#" UnturnedImages.RocketMod/UnturnedImages.RocketMod.csproj
+          sed -i "s#<Version>0.0.0</Version>#<Version>$release_version</Version>#" tools/UnturnedImages.Module/UnturnedImages.Module.csproj
+          sed -i "s#<Version>0.0.0</Version>#<Version>$release_version</Version>#" tools/UnturnedImages.Module.Bootstrapper/UnturnedImages.Module.Bootstrapper.csproj
+          sed -i "s#\"Version\": \"0.0.0\"#\"Version\": \"$release_version\"#" tools/UnturnedImages.Module/UnturnedImages.module
 
       - name: Build OpenMod plugin
         run: dotnet build UnturnedImages.OpenMod/UnturnedImages.csproj --configuration Release --no-restore
@@ -40,6 +49,34 @@ jobs:
 
       - name: Build module
         run: dotnet build tools/UnturnedImages.Module/UnturnedImages.Module.csproj --configuration Release --no-restore
+
+      - name: Push OpenMod to NuGet
+        run: |
+          dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_DEPLOY_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      - name: Push RocketMod to NuGet
+        run: |
+          dotnet nuget push UnturnedImages.RocketMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_DEPLOY_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+      - name: Push OpenMod to GitHub Packages
+        run: |
+          dotnet nuget push UnturnedImages.OpenMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/F-Plugins/index.json \
+            --skip-duplicate
+
+      - name: Push RocketMod to GitHub Packages
+        run: |
+          dotnet nuget push UnturnedImages.RocketMod/bin/Release/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/F-Plugins/index.json \
+            --skip-duplicate
 
       - name: Stage release files
         run: |
@@ -75,5 +112,7 @@ jobs:
             UnturnedImages.RocketMod.zip
             UnturnedImages.Module.zip
             UnturnedImages.All.zip
+            UnturnedImages.OpenMod/bin/Release/*.nupkg
+            UnturnedImages.RocketMod/bin/Release/*.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
